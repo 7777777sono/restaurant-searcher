@@ -1,5 +1,7 @@
 <template>
-  <div class="home">
+  <div class="search-zone">
+    <h3>検索範囲をkm単位で入力してください。</h3>
+    <h4>※500mなら0.5</h4>
     <input
       type="number"
       v-model="radius"
@@ -18,7 +20,7 @@
     >
       <img v-bind:src="result.info.photo.pc.l" />
       <h3>{{ result.info.name }}</h3>
-      <h3>{{ result.info.mobile_access }}</h3>
+      <h3>アクセス: {{ result.info.mobile_access }}</h3>
     </div>
   </div>
 </template>
@@ -77,6 +79,19 @@ export default {
 @mixin max-width($width: 480px) {
   @media screen and (max-width: $width) {
     @content;
+  }
+}
+
+.search-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  h3 {
+    margin-top: 20px;
+  }
+  h4 {
+    margin-top: 0;
   }
 }
 
