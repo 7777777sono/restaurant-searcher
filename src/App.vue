@@ -1,26 +1,155 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <nav>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link> |
+    <router-link to="/detail">Detail</router-link>
+  </nav>
+  <router-view
+    v-bind:results="results"
+    v-bind:restaurant="detailRestaurant"
+    v-on:detail="detailDisplay"
+    v-on:search="searchResturant"
+  />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue"
+import VueGeolocation from "vue3-geolocation"
 
 export default {
-  name: "App",
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      API_KEY: "3ea416f7ceb2e235", // HOTPPEPERのAPIキー
+      current_location: {}, // 現在地を取得するオブジェクト
+      url: "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=", // APIのURL(APIキー前までの)
+      searchRange: 1, // HOTPPEPER APIの検索範囲(ある地点からの範囲内のお店の検索)を決める変数
+      format: "json", // レスポンス形式の指定
+      restaurants: [], // 取得した店の情報を格納する
+      results: [], // 検索結果を格納する連想配列
+      detailRestaurant: {}, // 店舗詳細を見たい店舗の情報を格納するオブジェクト
+    }
+  },
+  methods: {
+    // 現在地を取得する関数
+    getLocation: async function () {
+      await VueGeolocation.getLocation()
+        .then((coordinates) => {
+          this.current_location = {
+            lat: coordinates.lat, //緯度
+            lng: coordinates.lng, //経度
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    // 店の情報を取得する関数
+    getRestaurant: async function (radius) {
+      // 検索半径300m以内なら
+      if (radius * 1000 <= 300) {
+        this.searchRange = 1
+      }
+      // 検索半径500m以内なら
+      else if (radius * 1000 <= 500) {
+        this.searchRange = 2
+      }
+      // 検索半径1000m以内なら
+      else if (radius * 1000 <= 1000) {
+        this.searchRange = 3
+      }
+      // 検索半径2000m以内なら
+      else if (radius * 1000 <= 2000) {
+        this.searchRange = 4
+      }
+      // 検索半径3000m以内なら
+      else if (radius * 1000 <= 3000) {
+        this.searchRange = 5
+      }
+      const data = await fetch(
+        this.url +
+          this.API_KEY +
+          "&lat=" +
+          this.current_location.lat +
+          "&lng=" +
+          this.current_location.lng +
+          "&range=" +
+          this.searchRange +
+          "&format=" +
+          this.format
+      )
+      const json = await data.json()
+      this.restaurants = json.results.shop
+    },
+    // 検索結果を取得する関数
+    getResults: function () {},
+
+    // とある2点間の距離(km単位)を計算する関数
+    distance: function (lat1, lng1, lat2, lng2) {
+      const R = Math.PI / 180
+      const EARTH_RADIUS = 6371
+      lat1 *= R
+      lng1 *= R
+      lat2 *= R
+      lng2 *= R
+      return (
+        EARTH_RADIUS *
+        Math.acos(
+          Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) +
+            Math.sin(lat1) * Math.sin(lat2)
+        )
+      )
+    },
+    searchResturant: async function (radius) {
+      this.results = []
+      await this.getLocation()
+      await this.getRestaurant(radius)
+      for (let i = 0; i < this.restaurants.length; i++) {
+        // 検索半径なら検索結果とする
+        if (
+          radius >=
+          this.distance(
+            this.current_location.lat,
+            this.current_location.lng,
+            this.restaurants[i].lat,
+            this.restaurants[i].lng
+          )
+        ) {
+          this.results.push({
+            info: this.restaurants[i],
+            distance: this.distance(
+              this.current_location.lat,
+              this.current_location.lng,
+              this.restaurants[i].lat,
+              this.restaurants[i].lng
+            ),
+          })
+        }
+      }
+    },
+    // 店舗詳細を画面に出力するための関数
+    detailDisplay: function (index) {
+      this.detailRestaurant = this.results[index]
+    },
   },
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+nav {
+  padding: 30px;
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  a.router-link-exact-active {
+    color: #42b983;
+  }
 }
 </style>
