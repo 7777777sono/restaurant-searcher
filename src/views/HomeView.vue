@@ -30,9 +30,12 @@ export default {
   props: {
     results: {
       type: Array,
+      default: () => [],
+      required: true,
     },
   },
-
+  inheritAttrs: false,
+  emits: ["search", "detail"],
   data() {
     return {
       radius: 1, // 検索半径(km単位)
@@ -52,6 +55,7 @@ export default {
     // 検索を行うための関数
     // App.vueにsearchというイベントを発火し、App.vueで店の情報の取得を行う。
     search: function () {
+      this.radiusJudge()
       this.$emit("search", this.radius)
     },
     // 詳細画面に遷移するための関数
@@ -92,6 +96,22 @@ export default {
   }
   h4 {
     margin-top: 0;
+  }
+  input {
+    width: 10%;
+  }
+  button {
+    width: 5%;
+    background: #09c;
+    border: #09c;
+    color: white;
+    border-radius: 100vh;
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  button:hover {
+    color: black;
   }
 }
 
