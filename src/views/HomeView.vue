@@ -1,15 +1,19 @@
 <template>
   <div class="search-zone">
-    <h3>検索範囲をkm単位で入力してください。</h3>
-    <h4>※500mなら0.5</h4>
-    <input
-      type="number"
-      v-model="radius"
-      v-on:change="radiusJudge"
-      max="3"
-      min="0"
-    />
-    <button v-on:click="search">検索</button>
+    <div class="input-zone">
+      <h3>検索範囲をkm単位で入力してください。(3kmまで)</h3>
+      <h4>※500mなら0.5</h4>
+      <input
+        type="number"
+        v-model="radius"
+        v-on:change="radiusJudge"
+        max="3"
+        min="0"
+      />
+    </div>
+    <div class="search-button">
+      <button v-on:click="search">検索</button>
+    </div>
   </div>
   <div v-if="results.length > 0" class="results-zone">
     <div
@@ -30,9 +34,12 @@ export default {
   props: {
     results: {
       type: Array,
+      default: () => [],
+      required: true,
     },
   },
-
+  inheritAttrs: false,
+  emits: ["search", "detail"],
   data() {
     return {
       radius: 1, // 検索半径(km単位)
@@ -52,6 +59,7 @@ export default {
     // 検索を行うための関数
     // App.vueにsearchというイベントを発火し、App.vueで店の情報の取得を行う。
     search: function () {
+      this.radiusJudge()
       this.$emit("search", this.radius)
     },
     // 詳細画面に遷移するための関数
@@ -82,16 +90,69 @@ export default {
   }
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,300&family=Noto+Serif+HK:wght@200&family=Noto+Serif+JP:wght@200&family=PT+Serif:ital@1&family=Shippori+Mincho&display=swap");
+
 .search-zone {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  h3 {
-    margin-top: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
+  font-family: "Merriweather", serif;
+  font-family: "Noto Serif HK", serif;
+  font-family: "Noto Serif JP", serif;
+  font-family: "PT Serif", serif;
+  font-family: "Shippori Mincho", serif;
+  .input-zone {
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding-right: 10px;
+    padding-left: 10px;
+    h3 {
+      margin-top: 20px;
+    }
+    h4 {
+      margin-top: 0;
+    }
+    input {
+      width: 10%;
+      font-size: 15px;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-bottom: solid 1px rgb(176, 174, 174);
+      margin-bottom: 20px;
+    }
+    input:focus {
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-bottom: solid 1px #09c;
+      outline: none;
+    }
   }
-  h4 {
-    margin-top: 0;
+  button {
+    background: #09c;
+    border: #09c;
+    color: white;
+    border-radius: 100vh;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    font-size: 17px;
+    cursor: pointer;
+    font-family: "Merriweather", serif;
+    font-family: "Noto Serif HK", serif;
+    font-family: "Noto Serif JP", serif;
+    font-family: "PT Serif", serif;
+    font-family: "Shippori Mincho", serif;
+  }
+  @include min-width(520px) {
+    button:hover {
+      color: black;
+    }
   }
 }
 
@@ -100,6 +161,11 @@ export default {
   padding-right: 20px;
   display: flex;
   flex-wrap: wrap;
+  font-family: "Merriweather", serif;
+  font-family: "Noto Serif HK", serif;
+  font-family: "Noto Serif JP", serif;
+  font-family: "PT Serif", serif;
+  font-family: "Shippori Mincho", serif;
   .shop-zone {
     overflow: hidden;
     border-radius: 8px;
@@ -127,10 +193,14 @@ export default {
       margin-bottom: 10px;
     }
   }
-  .shop-zone:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    transition: all 0.5s;
+  @include min-width(521px) {
+    .shop-zone:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1),
+        0 3px 6px rgba(0, 0, 0, 0.08);
+      transition: all 0.5s;
+      cursor: pointer;
+    }
   }
 }
 </style>
