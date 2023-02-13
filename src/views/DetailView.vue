@@ -10,6 +10,7 @@
       <h3>定休日: {{ restaurant.info.close }}</h3>
     </div>
   </div>
+  <MapDisplay></MapDisplay>
   <div class="link-zone">
     <h4>以下のリンクよりお戻りください。</h4>
     <router-link to="/">Home</router-link>
@@ -17,18 +18,19 @@
 </template>
 
 <script>
+import MapDisplay from "@/components/MapDisplay.vue"
+
 export default {
   props: {
     restaurant: {
       type: Object,
     },
   },
-
   inheritAttrs: false,
-
   data() {
     return {}
   },
+  components: { MapDisplay },
 }
 </script>
 
