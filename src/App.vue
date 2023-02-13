@@ -130,7 +130,16 @@ export default {
 </script>
 
 <style lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,300&family=Noto+Serif+HK:wght@200&family=Noto+Serif+JP:wght@200&family=PT+Serif:ital@1&family=Shippori+Mincho&display=swap");
+
 .title {
   margin-top: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  font-family: "Merriweather", serif;
+  font-family: "Noto Serif HK", serif;
+  font-family: "Noto Serif JP", serif;
+  font-family: "PT Serif", serif;
+  font-family: "Shippori Mincho", serif;
 }
 </style>
