@@ -10,7 +10,11 @@
       <h3>定休日: {{ restaurant.info.close }}</h3>
     </div>
   </div>
-  <MapDisplay></MapDisplay>
+  <MapDisplay
+    v-bind:restaurantLat="restaurant.info.lat"
+    v-bind:restaurantLng="restaurant.info.lng"
+    v-bind:currentLocation="currentLocation"
+  ></MapDisplay>
   <div class="link-zone">
     <h4>以下のリンクよりお戻りください。</h4>
     <router-link to="/">Home</router-link>
@@ -21,8 +25,12 @@
 import MapDisplay from "@/components/MapDisplay.vue"
 
 export default {
+  components: { MapDisplay },
   props: {
     restaurant: {
+      type: Object,
+    },
+    currentLocation: {
       type: Object,
     },
   },
@@ -30,7 +38,9 @@ export default {
   data() {
     return {}
   },
-  components: { MapDisplay },
+  mounted() {
+    window.scrollTo(0, 0)
+  },
 }
 </script>
 
