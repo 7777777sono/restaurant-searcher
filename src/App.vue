@@ -22,7 +22,7 @@ export default {
       format: "json", // レスポンス形式の指定
       restaurants: [], // 取得した店の情報を格納する
       results: [], // 検索結果を格納する連想配列
-      detailRestaurant: {}, // 店舗詳細を見たい店舗の情報を格納するオブジェクト
+      detailRestaurant: {}, // 店舗詳細を見たい店舗の情報と現在地からの距離を格納するオブジェクト
     }
   },
   methods: {
@@ -121,6 +121,7 @@ export default {
         }
       }
       alert("検索結果: " + this.results.length + "件でした。")
+      this.$router.push("/result")
     },
     // 店舗詳細を画面に出力するための関数
     detailDisplay: function (index) {
