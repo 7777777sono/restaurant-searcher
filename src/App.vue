@@ -76,9 +76,6 @@ export default {
       const json = await data.json()
       this.restaurants = json.results.shop
     },
-    // 検索結果を取得する関数
-    getResults: function () {},
-
     // とある2点間の距離(km単位)を計算する関数
     distance: function (lat1, lng1, lat2, lng2) {
       const R = Math.PI / 180

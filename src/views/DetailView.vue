@@ -45,19 +45,19 @@ export default {
 </script>
 
 <style lang="scss">
-@mixin min-width($width: 481px) {
+@mixin min-width($width: 961px) {
   @media screen and (min-width: $width) {
     @content;
   }
 }
 
-@mixin min-max-width($min: 481px, $max: 800px) {
+@mixin min-max-width($min: 521px, $max: 960px) {
   @media screen and (min-width: $min) and (max-width: $max) {
     @content;
   }
 }
 
-@mixin max-width($width: 480px) {
+@mixin max-width($width: 520px) {
   @media screen and (max-width: $width) {
     @content;
   }
@@ -130,7 +130,7 @@ export default {
   a {
     color: black;
   }
-  @include min-width(521px) {
+  @include min-width(961px) {
     a:hover {
       color: #09c;
     }

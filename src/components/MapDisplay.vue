@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="map-zone">
     <!--マップ-->
-    <l-map style="height: 300px" v-bind:zoom="zoom" v-bind:center="center">
+    <l-map v-bind:zoom="zoom" v-bind:center="center">
       <!--レイヤーコントロール-->
       <l-control-layers position="topright"></l-control-layers>
       <!--レイヤ設定-->
@@ -13,6 +13,7 @@
       ></l-tile-layer>
       <!--マーカー-->
       <l-marker v-bind:lat-lng="restaurantMarker">
+        <l-popup v-bind:content="destinationIcon.contents"></l-popup>
         <l-icon
           v-bind:icon-url="destinationIcon.iconUrl"
           v-bind:icon-size="destinationIcon.iconSize"
@@ -20,6 +21,7 @@
         ></l-icon>
       </l-marker>
       <l-marker :lat-lng="currentLocation">
+        <l-popup v-bind:content="icon.contents"></l-popup>
         <l-icon
           v-bind:icon-url="icon.iconUrl"
           v-bind:icon-size="icon.iconSize"
@@ -40,6 +42,7 @@ import {
   LControlLayers,
   LMarker,
   LIcon,
+  LPopup,
 } from "@vue-leaflet/vue-leaflet"
 
 export default {
@@ -49,6 +52,7 @@ export default {
     LControlLayers,
     LMarker,
     LIcon,
+    LPopup,
   },
   props: {
     restaurantLat: {
@@ -64,22 +68,26 @@ export default {
   inheritAttrs: false,
   data() {
     return {
-      center: [this.currentLocation.lat, this.currentLocation.lng], // 地図の中央地点(現在地)
-      zoom: 17,
+      center: [this.restaurantLat, this.restaurantLng], // 地図の中央地点(店の地点)
+      zoom: 15, // 地図をどのくらい拡大するのかを指定する数値
       currentLocationMarker: [
         this.currentLocation.lat,
         this.currentLocation.lng,
       ], // 現在地のマーカー
       restaurantMarker: [this.restaurantLat, this.restaurantLng], // 店の位置のマーカー
+      // 現在地におけるアイコンの詳細
       icon: {
         iconUrl: icon,
-        iconSize: [27, 27],
-        iconAnchor: [16, 37],
+        iconSize: [23, 23],
+        iconAnchor: [0, 0],
+        contents: "現在地",
       },
+      // 店の場所におけるアイコンの詳細
       destinationIcon: {
         iconUrl: destinationIconImg,
         iconSize: [42, 42],
-        iconAnchor: [16, 37],
+        iconAnchor: [0, 0],
+        contents: "目的地",
       },
       tileProvider: {
         visible: true,
@@ -91,3 +99,46 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+@mixin min-width($width: 961px) {
+  @media screen and (min-width: $width) {
+    @content;
+  }
+}
+
+@mixin min-max-width($min: 521px, $max: 960px) {
+  @media screen and (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}
+
+@mixin max-width($width: 520px) {
+  @media screen and (max-width: $width) {
+    @content;
+  }
+}
+
+.map-zone {
+  padding-right: 50px;
+  padding-left: 50px;
+}
+
+@include max-width(520px) {
+  .map-zone {
+    height: 200px;
+  }
+}
+
+@include min-max-width(521px, 960px) {
+  .map-zone {
+    height: 300px;
+  }
+}
+
+@include min-width(961px) {
+  .map-zone {
+    height: 400px;
+  }
+}
+</style>
