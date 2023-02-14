@@ -19,12 +19,12 @@
     <div
       v-for="(result, index) in results"
       v-bind:key="index"
-      v-on:click="screenTransition(index)"
       class="shop-zone"
     >
       <img v-bind:src="result.info.photo.pc.l" />
       <h3>{{ result.info.name }}</h3>
       <h3>アクセス: {{ result.info.mobile_access }}</h3>
+      <button v-on:click="screenTransition(index)">詳細</button>
     </div>
   </div>
 </template>
@@ -72,19 +72,19 @@ export default {
 </script>
 
 <style lang="scss">
-@mixin min-width($width: 481px) {
+@mixin min-width($width: 961px) {
   @media screen and (min-width: $width) {
     @content;
   }
 }
 
-@mixin min-max-width($min: 481px, $max: 800px) {
+@mixin min-max-width($min: 521px, $max: 960px) {
   @media screen and (min-width: $min) and (max-width: $max) {
     @content;
   }
 }
 
-@mixin max-width($width: 480px) {
+@mixin max-width($width: 520px) {
   @media screen and (max-width: $width) {
     @content;
   }
@@ -136,12 +136,11 @@ export default {
     background: #09c;
     border: #09c;
     color: white;
-    border-radius: 100vh;
+    border-radius: 0.25rem;
     margin-top: 10px;
     margin-bottom: 20px;
-    padding-right: 10px;
-    padding-left: 10px;
-    font-size: 17px;
+    padding: 5px 20px;
+    font-size: 20px;
     cursor: pointer;
     font-family: "Merriweather", serif;
     font-family: "Noto Serif HK", serif;
@@ -149,7 +148,7 @@ export default {
     font-family: "PT Serif", serif;
     font-family: "Shippori Mincho", serif;
   }
-  @include min-width(520px) {
+  @include min-width(961px) {
     button:hover {
       color: black;
     }
@@ -161,18 +160,22 @@ export default {
   padding-right: 20px;
   display: flex;
   flex-wrap: wrap;
-  font-family: "Merriweather", serif;
-  font-family: "Noto Serif HK", serif;
-  font-family: "Noto Serif JP", serif;
-  font-family: "PT Serif", serif;
-  font-family: "Shippori Mincho", serif;
   .shop-zone {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     overflow: hidden;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     margin-right: 10px;
     margin-left: 10px;
     margin-bottom: 20px;
+    font-family: "Merriweather", serif;
+    font-family: "Noto Serif HK", serif;
+    font-family: "Noto Serif JP", serif;
+    font-family: "PT Serif", serif;
+    font-family: "Shippori Mincho", serif;
     @include max-width(520px) {
       width: calc(100%);
     }
@@ -192,14 +195,33 @@ export default {
       width: 100%;
       margin-bottom: 10px;
     }
+    button {
+      margin-bottom: 20px;
+      width: 30%;
+      font-size: 20px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      background: #09c;
+      border: #09c;
+      color: white;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      font-family: "Merriweather", serif;
+      font-family: "Noto Serif HK", serif;
+      font-family: "Noto Serif JP", serif;
+      font-family: "PT Serif", serif;
+      font-family: "Shippori Mincho", serif;
+    }
   }
-  @include min-width(521px) {
+  @include min-width(961px) {
     .shop-zone:hover {
       transform: translateY(-3px);
       box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1),
         0 3px 6px rgba(0, 0, 0, 0.08);
       transition: all 0.5s;
-      cursor: pointer;
+      button:hover {
+        color: black;
+      }
     }
   }
 }

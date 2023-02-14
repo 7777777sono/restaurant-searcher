@@ -2,6 +2,7 @@
   <h1 class="title">Restaurant Searcher</h1>
   <router-view
     v-bind:results="results"
+    v-bind:currentLocation="currentLocation"
     v-bind:restaurant="detailRestaurant"
     v-on:detail="detailDisplay"
     v-on:search="searchResturant"
@@ -15,7 +16,7 @@ export default {
   data() {
     return {
       API_KEY: "3ea416f7ceb2e235", // HOTPPEPERのAPIキー
-      current_location: {}, // 現在地を取得するオブジェクト
+      currentLocation: {}, // 現在地を取得するオブジェクト
       url: "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=", // APIのURL(APIキー前までの)
       searchRange: 1, // HOTPPEPER APIの検索範囲(ある地点からの範囲内のお店の検索)を決める変数
       format: "json", // レスポンス形式の指定
@@ -29,7 +30,7 @@ export default {
     getLocation: async function () {
       await VueGeolocation.getLocation()
         .then((coordinates) => {
-          this.current_location = {
+          this.currentLocation = {
             lat: coordinates.lat, //緯度
             lng: coordinates.lng, //経度
           }
@@ -64,9 +65,9 @@ export default {
         this.url +
           this.API_KEY +
           "&lat=" +
-          this.current_location.lat +
+          this.currentLocation.lat +
           "&lng=" +
-          this.current_location.lng +
+          this.currentLocation.lng +
           "&range=" +
           this.searchRange +
           "&format=" +
@@ -75,9 +76,6 @@ export default {
       const json = await data.json()
       this.restaurants = json.results.shop
     },
-    // 検索結果を取得する関数
-    getResults: function () {},
-
     // とある2点間の距離(km単位)を計算する関数
     distance: function (lat1, lng1, lat2, lng2) {
       const R = Math.PI / 180
@@ -103,8 +101,8 @@ export default {
         if (
           radius >=
           this.distance(
-            this.current_location.lat,
-            this.current_location.lng,
+            this.currentLocation.lat,
+            this.currentLocation.lng,
             this.restaurants[i].lat,
             this.restaurants[i].lng
           )
@@ -112,8 +110,8 @@ export default {
           this.results.push({
             info: this.restaurants[i],
             distance: this.distance(
-              this.current_location.lat,
-              this.current_location.lng,
+              this.currentLocation.lat,
+              this.currentLocation.lng,
               this.restaurants[i].lat,
               this.restaurants[i].lng
             ),

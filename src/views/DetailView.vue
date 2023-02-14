@@ -10,6 +10,11 @@
       <h3>定休日: {{ restaurant.info.close }}</h3>
     </div>
   </div>
+  <MapDisplay
+    v-bind:restaurantLat="restaurant.info.lat"
+    v-bind:restaurantLng="restaurant.info.lng"
+    v-bind:currentLocation="currentLocation"
+  ></MapDisplay>
   <div class="link-zone">
     <h4>以下のリンクよりお戻りください。</h4>
     <router-link to="/">Home</router-link>
@@ -17,35 +22,42 @@
 </template>
 
 <script>
+import MapDisplay from "@/components/MapDisplay.vue"
+
 export default {
+  components: { MapDisplay },
   props: {
     restaurant: {
       type: Object,
     },
+    currentLocation: {
+      type: Object,
+    },
   },
-
   inheritAttrs: false,
-
   data() {
     return {}
+  },
+  mounted() {
+    window.scrollTo(0, 0)
   },
 }
 </script>
 
 <style lang="scss">
-@mixin min-width($width: 481px) {
+@mixin min-width($width: 961px) {
   @media screen and (min-width: $width) {
     @content;
   }
 }
 
-@mixin min-max-width($min: 481px, $max: 800px) {
+@mixin min-max-width($min: 521px, $max: 960px) {
   @media screen and (min-width: $min) and (max-width: $max) {
     @content;
   }
 }
 
-@mixin max-width($width: 480px) {
+@mixin max-width($width: 520px) {
   @media screen and (max-width: $width) {
     @content;
   }
@@ -118,7 +130,7 @@ export default {
   a {
     color: black;
   }
-  @include min-width(521px) {
+  @include min-width(961px) {
     a:hover {
       color: #09c;
     }
