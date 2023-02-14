@@ -28,6 +28,9 @@
       <img v-bind:src="result.info.photo.pc.l" />
       <h3>{{ result.info.name }}</h3>
       <h3>アクセス: {{ result.info.mobile_access }}</h3>
+      <h3>
+        距離: およそ{{ Math.round(Math.round(result.distance * 10)) / 10 }}km
+      </h3>
       <button v-on:click="screenTransition(index)">詳細</button>
     </div>
   </div>
