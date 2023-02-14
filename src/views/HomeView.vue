@@ -11,6 +11,10 @@
         min="0"
       />
     </div>
+    <div class="input-zone">
+      <h3>キーワードを入力してください。</h3>
+      <input class="text-input" type="text" v-model="keyword" />
+    </div>
     <div class="search-button">
       <button v-on:click="search">検索</button>
     </div>
@@ -45,6 +49,7 @@ export default {
       radius: 1, // 検索半径(km単位)
       radiusMin: 0, // 検索半径の最小値
       radiusMax: 3, // 検索半径の最大値
+      keyword: "", // 検索する際のキーワード
     }
   },
   methods: {
@@ -60,7 +65,7 @@ export default {
     // App.vueにsearchというイベントを発火し、App.vueで店の情報の取得を行う。
     search: function () {
       this.radiusJudge()
-      this.$emit("search", this.radius)
+      this.$emit("search", this.radius, this.keyword)
     },
     // 詳細画面に遷移するための関数
     screenTransition: function (index) {
@@ -107,6 +112,7 @@ export default {
     overflow: hidden;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
     padding-right: 10px;
     padding-left: 10px;
     h3 {
@@ -114,6 +120,9 @@ export default {
     }
     h4 {
       margin-top: 0;
+    }
+    .text-input {
+      width: 50%;
     }
     input {
       width: 10%;
@@ -137,7 +146,6 @@ export default {
     border: #09c;
     color: white;
     border-radius: 0.25rem;
-    margin-top: 10px;
     margin-bottom: 20px;
     padding: 5px 20px;
     font-size: 20px;

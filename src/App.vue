@@ -40,7 +40,7 @@ export default {
         })
     },
     // 店の情報を取得する関数
-    getRestaurant: async function (radius) {
+    getRestaurant: async function (radius, keyword) {
       // 検索半径300m以内なら
       if (radius * 1000 <= 300) {
         this.searchRange = 1
@@ -71,7 +71,9 @@ export default {
           "&range=" +
           this.searchRange +
           "&format=" +
-          this.format
+          this.format +
+          "&keyword=" +
+          keyword
       )
       const json = await data.json()
       this.restaurants = json.results.shop
@@ -92,10 +94,10 @@ export default {
         )
       )
     },
-    searchResturant: async function (radius) {
+    searchResturant: async function (radius, keyword) {
       this.results = []
       await this.getLocation()
-      await this.getRestaurant(radius)
+      await this.getRestaurant(radius, keyword)
       for (let i = 0; i < this.restaurants.length; i++) {
         // 検索半径なら検索結果とする
         if (
@@ -118,6 +120,7 @@ export default {
           })
         }
       }
+      alert("検索結果: " + this.results.length + "件でした。")
     },
     // 店舗詳細を画面に出力するための関数
     detailDisplay: function (index) {
