@@ -11,40 +11,25 @@
         min="0"
       />
     </div>
+    <div class="input-zone">
+      <h3>キーワードを入力してください。</h3>
+      <input class="text-input" type="text" v-model="keyword" />
+    </div>
     <div class="search-button">
       <button v-on:click="search">検索</button>
-    </div>
-  </div>
-  <div v-if="results.length > 0" class="results-zone">
-    <div
-      v-for="(result, index) in results"
-      v-bind:key="index"
-      class="shop-zone"
-    >
-      <img v-bind:src="result.info.photo.pc.l" />
-      <h3>{{ result.info.name }}</h3>
-      <h3>アクセス: {{ result.info.mobile_access }}</h3>
-      <button v-on:click="screenTransition(index)">詳細</button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    results: {
-      type: Array,
-      default: () => [],
-      required: true,
-    },
-  },
-  inheritAttrs: false,
-  emits: ["search", "detail"],
+  emits: ["search"],
   data() {
     return {
       radius: 1, // 検索半径(km単位)
       radiusMin: 0, // 検索半径の最小値
       radiusMax: 3, // 検索半径の最大値
+      keyword: "", // 検索する際のキーワード
     }
   },
   methods: {
@@ -60,12 +45,7 @@ export default {
     // App.vueにsearchというイベントを発火し、App.vueで店の情報の取得を行う。
     search: function () {
       this.radiusJudge()
-      this.$emit("search", this.radius)
-    },
-    // 詳細画面に遷移するための関数
-    screenTransition: function (index) {
-      this.$emit("detail", index)
-      this.$router.push("/detail")
+      this.$emit("search", this.radius, this.keyword)
     },
   },
 }
@@ -107,6 +87,7 @@ export default {
     overflow: hidden;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
     padding-right: 10px;
     padding-left: 10px;
     h3 {
@@ -114,6 +95,9 @@ export default {
     }
     h4 {
       margin-top: 0;
+    }
+    .text-input {
+      width: 50%;
     }
     input {
       width: 10%;
@@ -137,7 +121,6 @@ export default {
     border: #09c;
     color: white;
     border-radius: 0.25rem;
-    margin-top: 10px;
     margin-bottom: 20px;
     padding: 5px 20px;
     font-size: 20px;
@@ -151,77 +134,6 @@ export default {
   @include min-width(961px) {
     button:hover {
       color: black;
-    }
-  }
-}
-
-.results-zone {
-  padding-left: 20px;
-  padding-right: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  .shop-zone {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    margin-right: 10px;
-    margin-left: 10px;
-    margin-bottom: 20px;
-    font-family: "Merriweather", serif;
-    font-family: "Noto Serif HK", serif;
-    font-family: "Noto Serif JP", serif;
-    font-family: "PT Serif", serif;
-    font-family: "Shippori Mincho", serif;
-    @include max-width(520px) {
-      width: calc(100%);
-    }
-    @include min-max-width(521px, 960px) {
-      width: calc(50% - 20px);
-    }
-    @include min-width(961px) {
-      width: calc(25% - 20px);
-    }
-    h3 {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-    img {
-      padding-top: 0;
-      height: 200px;
-      width: 100%;
-      margin-bottom: 10px;
-    }
-    button {
-      margin-bottom: 20px;
-      width: 30%;
-      font-size: 20px;
-      padding-top: 5px;
-      padding-bottom: 5px;
-      background: #09c;
-      border: #09c;
-      color: white;
-      border-radius: 0.25rem;
-      cursor: pointer;
-      font-family: "Merriweather", serif;
-      font-family: "Noto Serif HK", serif;
-      font-family: "Noto Serif JP", serif;
-      font-family: "PT Serif", serif;
-      font-family: "Shippori Mincho", serif;
-    }
-  }
-  @include min-width(961px) {
-    .shop-zone:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1),
-        0 3px 6px rgba(0, 0, 0, 0.08);
-      transition: all 0.5s;
-      button:hover {
-        color: black;
-      }
     }
   }
 }

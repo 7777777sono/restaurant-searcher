@@ -1,48 +1,65 @@
-### 作者
-園田海斗
 ### アプリ名
 RestaurantSearcher
 
-#### コンセプト
-食べに行きたいお店がすぐ見つかる。
+## OS
+Microsoft Windows [Version 10.0.19044.2486]
 
-#### こだわったポイント
-飲食店の検索条件を豊富に選択できるようにしました。
-
-### 公開したアプリの URL（Store にリリースしている場合）
-https://apps.apple.com/jp/app/xxxx
-
-### 該当プロジェクトのリポジトリ URL（GitHub,GitLab など Git ホスティングサービスを利用されている場合）
-https://github.com/xxxx
-
-## 開発環境
+## 開発環境/言語
 ### 開発環境
-Xcode 11.2.1
-
-### 開発言語
-Swift 5.1
-
-## 動作対象端末・OS
-### 動作対象OS
-iOS 13.2.3
+Visual Studio Code 1.75.1
+### 言語
+JavaScript
 
 ## 開発期間
-7日間
+5日間
 
-## アプリケーション機能
+## 機能概要(機能一覧)
+- レストラン検索：ホットペッパーグルメサーチAPIを使用して、ユーザが指定した現在地からの距離以内の飲食店を検索を行います。キーワードにより条件を更に絞り込みことができます。
+- レストラン情報取得：ホットペッパーグルメサーチAPIを使用して、飲食店の詳細情報を取得します。
+- 地図により場所の確認：ライブラリのLeafletによって地図を表示させ、その地図にその店の位置と現在位置を知ることができます。
 
-### 機能一覧
-- レストラン検索：ホットペッパーグルメサーチAPIを使用して、現在地周辺の飲食店を検索する。
-- レストラン情報取得：ホットペッパーグルメサーチAPIを使用して、飲食店の詳細情報を取得する。
-- 電話アプリ連携：飲食店の電話番号を電話アプリに連携する。
-- 地図アプリ連携：飲食店の所在地を地図アプリに連携する。
+## フレームワーク(ver.含む)
+@vue/cli 5.0.4
 
-### 画面一覧
-- 検索画面 ：条件を指定してレストランを検索する。
-- 一覧画面 ：検索結果の飲食店を一覧表示する。
+## テーブル定義
+変数                    概要                                        型
+API_KEY                 HOTPPEPERのAPIキー                          String
+currentLocation         現在地を取得する                            lat: Number, lng: Number
+url                     APIのURL(APIキー前までの)                   String
+searchRange             HOTPPEPER APIの検索範囲                     String
+                        (ある地点からの範囲内のお店の検索)
+                        を決める変数
+format                  レスポンス形式の指定                         String
+restaurants             取得した店の情報を格納する                   Array
+results                 検索結果を格納する                           Array
+detailRestaurant        店舗詳細を見たい店舗の情報と                 info: Object, distance: Number
+                        現在地からの距離を格納する
+radius                  検索半径(km単位)                             Number
+radiusMin               検索半径の最小値                             Number
+radiusMax: 3            検索半径の最大値                             Number
+keyword                 検索する際のキーワード                       String
+center                  地図の中央地点                               Array
+zoom                    地図をどのくらい拡大するのかを指定する        Number
+currentLocationMarker   現在地のマーカー                             Array
+restaurantMarker        店の位置のマーカー                           Array
+icon                    現在地におけるアイコンの詳細                  iconUrl: String, iconSize: Array, iconAnchor: Array, cntents: String
+destinationIcon         店の場所におけるアイコンの詳細                iconUrl: String, iconSize: Array, iconAnchor: Array, cntents: String
+tileProvider            地図の画像を表示させるために必要な情報         visible: Boolean, url: String, attribution: String
+                        が格納されている
 
-### 使用しているAPI,SDK,ライブラリなど
-- ホットペッパーグルメサーチAPI
+## コンセプト
+検索結果を見やすくするのと結果一覧の際のユーザに必要最低限の情報の記載です。
 
-### アドバイスして欲しいポイント
-飲食店の一覧リストを使いやすく、見やすくしたい。
+## こだわったポイント
+- 地図に現在地と店の位置を表示させることで位置を分かりやすくしました。
+- 地図上のマーカーをクリックするとそのマーカーがどの位置を指しているのかを表示します。
+
+## デザイン面でこだわったポイント
+- 結果一覧をカードのデザインによって見やすくすることです。
+
+## アドバイスして欲しいポイント
+多くの人に利用して頂くためには、どのような機能を追加していけばよいのかを教えて頂きたいです。
+
+## 自己評価
+指定されたことに加えて地図の表示といったユーザに利用される工夫を加えた点は、良いと思います。
+これを多くのユーザに利用されるためのここだけの機能を加えられるともっと良いものができると考えています。

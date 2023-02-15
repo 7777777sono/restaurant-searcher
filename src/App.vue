@@ -22,7 +22,7 @@ export default {
       format: "json", // レスポンス形式の指定
       restaurants: [], // 取得した店の情報を格納する
       results: [], // 検索結果を格納する連想配列
-      detailRestaurant: {}, // 店舗詳細を見たい店舗の情報を格納するオブジェクト
+      detailRestaurant: {}, // 店舗詳細を見たい店舗の情報と現在地からの距離を格納するオブジェクト
     }
   },
   methods: {
@@ -40,7 +40,7 @@ export default {
         })
     },
     // 店の情報を取得する関数
-    getRestaurant: async function (radius) {
+    getRestaurant: async function (radius, keyword) {
       // 検索半径300m以内なら
       if (radius * 1000 <= 300) {
         this.searchRange = 1
@@ -71,7 +71,9 @@ export default {
           "&range=" +
           this.searchRange +
           "&format=" +
-          this.format
+          this.format +
+          "&keyword=" +
+          keyword
       )
       const json = await data.json()
       this.restaurants = json.results.shop
@@ -92,10 +94,10 @@ export default {
         )
       )
     },
-    searchResturant: async function (radius) {
+    searchResturant: async function (radius, keyword) {
       this.results = []
       await this.getLocation()
-      await this.getRestaurant(radius)
+      await this.getRestaurant(radius, keyword)
       for (let i = 0; i < this.restaurants.length; i++) {
         // 検索半径なら検索結果とする
         if (
@@ -118,6 +120,8 @@ export default {
           })
         }
       }
+      alert("検索結果: " + this.results.length + "件でした。")
+      this.$router.push("/result")
     },
     // 店舗詳細を画面に出力するための関数
     detailDisplay: function (index) {
