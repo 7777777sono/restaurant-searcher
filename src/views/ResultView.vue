@@ -29,6 +29,7 @@ export default {
       required: true,
     },
   },
+  emits: ["detail"],
   inheritAttrs: false,
   methods: {
     // 詳細画面に遷移するための関数

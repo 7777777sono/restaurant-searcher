@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  emits: ["search", "detail"],
+  emits: ["search"],
   data() {
     return {
       radius: 1, // 検索半径(km単位)
